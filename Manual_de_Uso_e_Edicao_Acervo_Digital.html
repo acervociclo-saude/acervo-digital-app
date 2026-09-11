@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Manual de Uso e Edição — Acervo Digital</title>
+  <style>
+    @media print {
+      body { margin: 1.5cm; }
+      .no-print { display: none; }
+      .page-break { page-break-before: always; }
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #24292e;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    h1 {
+      color: #0F4C81;
+      font-size: 28px;
+      border-bottom: 2px solid #eaecef;
+      padding-bottom: 10px;
+      margin-bottom: 8px;
+    }
+    h2 {
+      color: #1F4E79;
+      font-size: 20px;
+      margin-top: 32px;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 18px;
+      color: #586069;
+      margin-top: -6px;
+      margin-bottom: 24px;
+    }
+    .callout {
+      background: #F0F4F8;
+      border-left: 4px solid #0F4C81;
+      padding: 16px 20px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+    .callout strong {
+      color: #0F4C81;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid #d1d5da;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    th {
+      background-color: #1F4E79;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    tr:nth-child(even) {
+      background-color: #f6f8fa;
+    }
+    pre {
+      background: #f6f8fa;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      padding: 14px;
+      overflow-x: auto;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      font-size: 13px;
+    }
+    code {
+      background: #f0f3f6;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 12px;
+      background: #e1f5fe;
+      color: #0288d1;
+    }
+    .btn-print {
+      background: #0F4C81;
+      color: white;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    .btn-print:hover {
+      background: #1F4E79;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="no-print" style="text-align: right;">
+    <button class="btn-print" onclick="window.print()">🖨️ Imprimir ou Salvar em PDF</button>
+  </div>
+
+  <h1>📘 Manual de Uso e Edição</h1>
+  <div class="subtitle">Acervo Digital — Ciclo Saúde Proteção Social</div>
+
+  <div class="callout">
+    <strong>🔗 Links Oficiais do Projeto</strong><br>
+    • <b>Site no Ar (Vercel):</b> <a href="https://acervo-digital-app.vercel.app" target="_blank">https://acervo-digital-app.vercel.app</a><br>
+    • <b>Repositório no GitHub:</b> <a href="https://github.com/acervociclo-saude/acervo-digital-app" target="_blank">https://github.com/acervociclo-saude/acervo-digital-app</a><br>
+    • <b>Pasta no Computador:</b> <code>C:\Users\Diego\OneDrive\Documentos\Acervo-Digital-App</code>
+  </div>
+
+  <h2>1. Princípio Central do Produto</h2>
+  <p>O <b>Acervo Digital Ciclo Saúde Proteção Social</b> não é um novo repositório de arquivos. Ele foi construído como uma <b>camada de experiência, navegação e arquitetura da informação sobre o repositório existente no Google Drive</b>.</p>
+  <p>O objetivo é eliminar o esforço cognitivo do usuário (gestores, profissionais de saúde e articuladores municipais). Ele não precisa saber onde os arquivos estão guardados nem como as pastas estão organizadas. Ele apenas reconhece seu contexto e faz escolhas simples:</p>
+  <p style="background: #e8f5e9; padding: 12px; border-radius: 6px; font-weight: bold; color: #1b5e20;">
+    👉 Maranhão ➔ Temas (1 a 3 opções) ➔ Tópico Específico ➔ Pasta Aberta no Google Drive.
+  </p>
+
+  <h2>2. Como Funciona a Navegação (As 9 Telas)</h2>
+  <p>A aplicação foi desenvolvida em formato mobile-first (proporção 9:16), funcionando com perfeição tanto no celular quanto no computador:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 10%;">Tela</th>
+        <th style="width: 25%;">Nome da Tela</th>
+        <th>Comportamento e Regras</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Tela 1</b></td>
+        <td>Início / Dropdown Fechado</td>
+        <td>Apresentação com botão para selecionar o estado.</td>
+      </tr>
+      <tr>
+        <td><b>Tela 2</b></td>
+        <td>Seleção de Estado</td>
+        <td>Apenas Maranhão (MA) ativo. Clicar em outros estados exibe o alerta: <i>"Atualmente apenas os arquivos do Maranhão estão disponíveis."</i></td>
+      </tr>
+      <tr>
+        <td><b>Tela 3</b></td>
+        <td>Transição Automática</td>
+        <td>Feedback visual rápido (200ms) destacando a opção Maranhão em amarelo.</td>
+      </tr>
+      <tr>
+        <td><b>Tela 4</b></td>
+        <td>Estado Confirmado</td>
+        <td>Exibe Maranhão selecionado e o botão <b>"CONTINUAR &gt;"</b>.</td>
+      </tr>
+      <tr>
+        <td><b>Tela 5</b></td>
+        <td>Seleção de Temas (1 a 3)</td>
+        <td>Permite marcar entre 1 e 3 temas. Cada clique apenas seleciona/desmarca (toggle). Limite rigoroso de 3 temas. Validação determinística no botão CONTINUAR.</td>
+      </tr>
+      <tr>
+        <td><b>Tela 6</b></td>
+        <td>Acervo de Conteúdos</td>
+        <td>Lista vertical dos 13 temas/tópicos de saúde disponíveis para a rota.</td>
+      </tr>
+      <tr>
+        <td><b>Tela 7</b></td>
+        <td>Feedback do Tópico</td>
+        <td>Transição automática de 200ms destacando em amarelo o tópico escolhido.</td>
+      </tr>
+      <tr>
+        <td><b>Tela 8</b></td>
+        <td>Launcher de Destino</td>
+        <td>Botão <b>"Clique aqui"</b> (abre a pasta no Google Drive em nova aba), link <b>"&lt;&lt; Voltar pra seleção"</b> e botão <b>"CONTINUAR &gt;"</b>.</td>
+      </tr>
+      <tr>
+        <td><b>Tela 9</b></td>
+        <td>Conclusão / Reinício</td>
+        <td>Tela de encerramento com botão para reiniciar o fluxo a partir da Tela 1.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>3. Regras de Validação dos Temas (Tela 5)</h2>
+  <ul>
+    <li><b>Mínimo 1 e Máximo 3 temas:</b> O usuário pode selecionar 1, 2 ou 3 temas simultaneamente.</li>
+    <li><b>Comportamento Toggle:</b> Cada clique em um tema alterna seu estado entre marcado e desmarcado, sem navegar sozinho.</li>
+    <li><b>Tentativa do 4º tema:</b> Se já houver 3 temas marcados e o usuário clicar no 4º, o sistema não adiciona e exibe: <code>"Selecione entre 1 e 3 opções"</code>.</li>
+    <li><b>Validação no CONTINUAR:</b> Ao clicar em CONTINUAR com 0 temas: avisa <code>"Selecione entre 1 e 3 opções"</code>.</li>
+    <li><b>Rota Inexistente no CSV:</b> Se a combinação não tiver pasta cadastrada: avisa <code>"A combinação selecionada não possui rota disponível."</code></li>
+    <li><b>Independência de Ordem:</b> A ordem dos cliques não afeta o resultado (<code>Saúde + SUS</code> é idêntico a <code>SUS + Saúde</code>).</li>
+  </ul>
+
+  <h2>4. Guia Prático de Edição de Conteúdos</h2>
+
+  <h3>📍 Como alterar ou atualizar Links do Google Drive</h3>
+  <p>Arquivo: <code>src/data/ma_saude_sus.json</code></p>
+  <p>Abra o arquivo no editor de texto. Cada um dos 13 tópicos possui o número, nome e o link correspondente. Para alterar para uma nova pasta, basta colar a nova URL no campo <code>linkDrive</code>:</p>
+  <pre><code>{
+  "numero": "01",
+  "tema": "Saúde da Mulher",
+  "linkDrive": "https://drive.google.com/drive/folders/COLE_O_NOVO_LINK_AQUI"
+}</code></pre>
+
+  <h3>📍 Como adicionar ou alterar Rotas de Temas</h3>
+  <p>Arquivo: <code>src/data/rotas.json</code></p>
+  <p>As rotas conectam os temas da Tela 5 ao arquivo de conteúdos da Tela 6. Para cadastrar uma nova combinação, adicione uma nova entrada:</p>
+  <pre><code>{
+  "estado": "MA",
+  "themes": ["Saúde", "SUS"],
+  "routeCode": "MA_SAUDE_SUS",
+  "destinationSheet": "MA_SAUDE_SUS"
+}</code></pre>
+
+  <h3>📍 Como atualizar as Imagens das Telas</h3>
+  <p>Pasta: <code>public/assets/</code></p>
+  <p>Basta colar as novas imagens em formato PNG de alta resolução (3375 x 6000 px), substituindo os arquivos com os mesmos nomes (<code>tela-1.png</code> até <code>tela-9.png</code>).</p>
+
+  <h2>5. Como Testar e Publicar Atualizações</h2>
+
+  <h4>1. Testar localmente no computador:</h4>
+  <pre><code>npm run dev</code></pre>
+  <p>Abra <code>http://localhost:5173/</code> no navegador. O Vite atualiza a tela na hora!</p>
+
+  <h4>2. Rodar os testes automatizados:</h4>
+  <pre><code>npm test</code></pre>
+  <p>Verifica os 26 testes de validação para garantir que nada foi quebrado.</p>
+
+  <h4>3. Salvar no GitHub da equipe:</h4>
+  <pre><code>git add .
+git commit -m "Atualização de links"
+git push</code></pre>
+
+  <h4>4. Publicar a versão atualizada no ar (Vercel):</h4>
+  <pre><code>npx vercel --prod</code></pre>
+  <p>O site oficial <a href="https://acervo-digital-app.vercel.app">https://acervo-digital-app.vercel.app</a> é atualizado imediatamente!</p>
+
+  <h2>6. Cuidados Importantes de Segurança</h2>
+  <ul>
+    <li><b>Não é necessária nenhuma API de segurança:</b> O aplicativo não armazena senhas, CPFs nem dados confidenciais.</li>
+    <li><b>Criptografia HTTPS:</b> A Vercel fornece certificado SSL/HTTPS e proteção de servidores automaticamente.</li>
+    <li><b>Permissão no Google Drive:</b> As pastas e arquivos compartilhados no Google Drive devem ser SEMPRE mantidos como <b>"Leitor" / "Visualizador"</b>, nunca como "Editor", para impedir que terceiros apaguem ou editem documentos acidentalmente.</li>
+  </ul>
+
+</body>
+</html>
