@@ -89,7 +89,7 @@ export const ScreenView: React.FC<ScreenViewProps> = ({
         />
       )}
 
-      {/* Screen 2: Dropdown options */}
+      {/* Screen 2: Dropdown options (3 states: MA, PA, MG) */}
       {currentScreen === 'tela-2' && (
         <>
           <Hotspot
@@ -116,26 +116,8 @@ export const ScreenView: React.FC<ScreenViewProps> = ({
             width="74.13%"
             height="4.2%"
             rounded="full"
-            label="Rio de Janeiro (RJ)"
-            onClick={() => onSelectState('RJ')}
-          />
-          <Hotspot
-            top="86.42%"
-            left="12.92%"
-            width="74.13%"
-            height="4.2%"
-            rounded="full"
             label="Minas Gerais (MG)"
             onClick={() => onSelectState('MG')}
-          />
-          <Hotspot
-            top="92.42%"
-            left="12.92%"
-            width="74.13%"
-            height="4.2%"
-            rounded="full"
-            label="Espírito Santo (ES)"
-            onClick={() => onSelectState('ES')}
           />
         </>
       )}
