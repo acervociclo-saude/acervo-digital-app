@@ -35,6 +35,14 @@ describe('routeEngine', () => {
     expect(route?.routeCode).toBe('MA_SAUDE_SUS');
   });
 
+  it('finds valid route for Saúde + Campanha', () => {
+    const route1 = findRoute('MA', ['Saúde', 'Campanha'], routesData as RouteEntry[]);
+    const route2 = findRoute('MA', ['Campanha', 'Saúde'], routesData as RouteEntry[]);
+    expect(route1).not.toBeNull();
+    expect(route2).not.toBeNull();
+    expect(route1?.destinationSheet).toBe('MA_SAUDE_SUS');
+  });
+
   it('rejects combinations without route in spreadsheet', () => {
     const route = findRoute('MA', ['CRAS', 'SUAS'], routesData as RouteEntry[]);
     expect(route).toBeNull();

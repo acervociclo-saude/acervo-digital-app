@@ -32,16 +32,6 @@
   {
     "estado": "MA",
     "themes": [
-      "Cuidado",
-      "SUS",
-      "UBS"
-    ],
-    "routeCode": "MA_SAUDE_SUS",
-    "destinationSheet": "MA_SAUDE_SUS"
-  },
-  {
-    "estado": "MA",
-    "themes": [
       "Saúde",
       "Campanha",
       "SUS"
@@ -113,7 +103,7 @@
     "estado": "MA",
     "themes": [
       "Saúde",
-      "SUS"
+      "Cuidado"
     ],
     "routeCode": "MA_SAUDE_SUS",
     "destinationSheet": "MA_SAUDE_SUS"
@@ -122,7 +112,7 @@
     "estado": "MA",
     "themes": [
       "Saúde",
-      "Cuidado"
+      "Campanha"
     ],
     "routeCode": "MA_SAUDE_SUS",
     "destinationSheet": "MA_SAUDE_SUS"
