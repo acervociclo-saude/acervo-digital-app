@@ -1,8 +1,13 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import type { ScreenId, CollectionItem, RouteEntry } from './types';
 import { APPROVED_MESSAGES } from './types';
 import { findRoute } from './routeEngine';
 import maSaudeSusData from '../data/ma_saude_sus.json';
+import paSaudeSusData from '../data/pa_saude_sus.json';
+import mgSaudeSusData from '../data/mg_saude_sus.json';
+import maProtecaoSocialData from '../data/ma_protecao_social.json';
+import paProtecaoSocialData from '../data/pa_protecao_social.json';
+import mgProtecaoSocialData from '../data/mg_protecao_social.json';
 
 const SESSION_STORAGE_KEY = 'acervo_digital_state_v1';
 
@@ -104,6 +109,44 @@ export function useAppFlow() {
     };
   }, []);
 
+  const currentTopics = useMemo(() => {
+    const dest = matchedRoute?.destinationSheet || '';
+    const code = matchedRoute?.routeCode || '';
+
+    if (dest === 'MG_SAUDE_SUS' || code === 'MG_SAUDE_SUS') {
+      return mgSaudeSusData as CollectionItem[];
+    }
+    if (dest === 'PA_SAUDE_SUS' || code === 'PA_SAUDE_SUS') {
+      return paSaudeSusData as CollectionItem[];
+    }
+    if (dest === 'MA_SAUDE_SUS' || code === 'MA_SAUDE_SUS') {
+      return maSaudeSusData as CollectionItem[];
+    }
+    if (dest.includes('MA_PROTE') || code === 'MA_PROT_SOCIAL') {
+      return maProtecaoSocialData as CollectionItem[];
+    }
+    if (dest.includes('PA_PROTE') || code === 'PA_PROT_SOCIAL') {
+      return paProtecaoSocialData as CollectionItem[];
+    }
+    if (dest.includes('MG_PROTE') || code === 'MG_PROT_SOCIAL') {
+      return mgProtecaoSocialData as CollectionItem[];
+    }
+
+    if (selectedState === 'MG') {
+      return mgSaudeSusData as CollectionItem[];
+    }
+    if (selectedState === 'PA') {
+      return paSaudeSusData as CollectionItem[];
+    }
+    return maSaudeSusData as CollectionItem[];
+  }, [matchedRoute, selectedState]);
+
+  const isProtecaoSocial = useMemo(() => {
+    const dest = matchedRoute?.destinationSheet || '';
+    const code = matchedRoute?.routeCode || '';
+    return dest.includes('PROTE') || code.includes('PROT');
+  }, [matchedRoute]);
+
   // Actions
   const handleOpenStateSelector = useCallback(() => {
     navigateTo('tela-2');
@@ -111,7 +154,7 @@ export function useAppFlow() {
 
   const handleSelectState = useCallback((stateCode: string) => {
     setSelectedState(stateCode);
-    if (stateCode === 'MA') {
+    if (stateCode === 'MA' || stateCode === 'PA' || stateCode === 'MG') {
       // Flash tela-3 (visual selection feedback) for 200ms, then go to tela-4
       setCurrentScreen('tela-3');
       if (transitionTimerRef.current) clearTimeout(transitionTimerRef.current);
@@ -119,7 +162,7 @@ export function useAppFlow() {
         navigateTo('tela-4');
       }, 200);
     } else {
-      showToast('Atualmente apenas os arquivos do Maranhão estão disponíveis.');
+      showToast('Estado selecionado inválido.');
     }
   }, [navigateTo, showToast]);
 
@@ -169,10 +212,10 @@ export function useAppFlow() {
   const handleOpenDriveLink = useCallback(() => {
     if (selectedTopic?.linkDrive) {
       window.open(selectedTopic.linkDrive, '_blank', 'noopener,noreferrer');
-    } else if (maSaudeSusData.length > 0) {
-      window.open(maSaudeSusData[0].linkDrive, '_blank', 'noopener,noreferrer');
+    } else if (currentTopics.length > 0) {
+      window.open(currentTopics[0].linkDrive, '_blank', 'noopener,noreferrer');
     }
-  }, [selectedTopic]);
+  }, [selectedTopic, currentTopics]);
 
   const handleBackToTopics = useCallback(() => {
     navigateTo('tela-6');
@@ -196,7 +239,8 @@ export function useAppFlow() {
     matchedRoute,
     selectedTopic,
     toastMessage,
-    topics: maSaudeSusData as CollectionItem[],
+    topics: currentTopics,
+    isProtecaoSocial,
     showToast,
     navigateTo,
     handleOpenStateSelector,

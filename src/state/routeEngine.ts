@@ -44,3 +44,11 @@ export function findRoute(
 
   return null;
 }
+
+export function getAllRoutesForState(
+  estado: string,
+  routes: RouteEntry[] = routesData as RouteEntry[]
+): RouteEntry[] {
+  const normEstado = estado.trim().toUpperCase();
+  return routes.filter((r) => r.estado.trim().toUpperCase() === normEstado);
+}

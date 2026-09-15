@@ -79,4 +79,28 @@ describe('ScreenView Component Hotspots', () => {
     fireEvent.click(contBtn);
     expect(onContinueToClosing).toHaveBeenCalledTimes(1);
   });
+
+  it('renders Pará background image when selectedState is PA', () => {
+    const { container } = render(
+      <ScreenView
+        {...defaultProps}
+        currentScreen="tela-6"
+        selectedState="PA"
+      />
+    );
+    const img = container.querySelector('img.screen-bg-img');
+    expect(img?.getAttribute('src')).toBe('/assets/pa/pa-tela-6.png');
+  });
+
+  it('renders Maranhão background image when selectedState is MA', () => {
+    const { container } = render(
+      <ScreenView
+        {...defaultProps}
+        currentScreen="tela-6"
+        selectedState="MA"
+      />
+    );
+    const img = container.querySelector('img.screen-bg-img');
+    expect(img?.getAttribute('src')).toBe('/assets/tela-6.png');
+  });
 });

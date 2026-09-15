@@ -198,13 +198,31 @@ describe('useAppFlow state machine & navigation tests', () => {
     expect(result.current.matchedRoute?.destinationSheet).toBe('MA_SAUDE_SUS');
   });
 
-  it('validates rule: 1 tema sem rota no CSV + CONTINUAR -> inválido (Campanha)', () => {
+  it('validates rule: 1 tema Campanha agora possui rota e avança com sucesso', () => {
     const { result } = renderHook(() => useAppFlow());
     act(() => {
       result.current.handleContinueFromState();
     });
     act(() => {
       result.current.handleToggleTheme('Campanha');
+    });
+    act(() => {
+      result.current.handleContinueFromThemes();
+    });
+    expect(result.current.currentScreen).toBe('tela-6');
+    expect(result.current.matchedRoute?.destinationSheet).toBe('MA_SAUDE_SUS');
+  });
+
+  it('validates rule: combinação mista sem rota (Saúde + SUAS) + CONTINUAR -> inválido', () => {
+    const { result } = renderHook(() => useAppFlow());
+    act(() => {
+      result.current.handleContinueFromState();
+    });
+    act(() => {
+      result.current.handleToggleTheme('Saúde');
+    });
+    act(() => {
+      result.current.handleToggleTheme('SUAS');
     });
     act(() => {
       result.current.handleContinueFromThemes();

@@ -4,9 +4,11 @@ import { Hotspot } from './Hotspot';
 
 interface ScreenViewProps {
   currentScreen: ScreenId;
+  selectedState?: string;
   selectedThemes: string[];
   selectedTopic: CollectionItem | null;
   topics: CollectionItem[];
+  isProtecaoSocial?: boolean;
   onOpenStateSelector: () => void;
   onSelectState: (stateCode: string) => void;
   onContinueFromState: () => void;
@@ -34,27 +36,39 @@ const THEME_PILLS = [
   { name: 'SUAS', top: '80.00%', left: '67.0%', width: '22.0%', height: '4.2%' },
 ];
 
-const TOPIC_ROW_COORDS = [
-  { numero: '01', top: '14.25%' },
-  { numero: '02', top: '20.60%' },
-  { numero: '03', top: '26.95%' },
-  { numero: '04', top: '33.30%' },
-  { numero: '05', top: '39.65%' },
-  { numero: '06', top: '46.00%' },
-  { numero: '07', top: '52.35%' },
-  { numero: '08', top: '58.70%' },
-  { numero: '09', top: '65.05%' },
-  { numero: '10', top: '71.40%' },
-  { numero: '11', top: '77.75%' },
-  { numero: '12', top: '84.10%' },
-  { numero: '13', top: '90.45%' },
+const TOPIC_ROW_COORDS_SAUDE = [
+  { numero: '01', top: '14.25%', height: '5.4%' },
+  { numero: '02', top: '20.60%', height: '5.4%' },
+  { numero: '03', top: '26.95%', height: '5.4%' },
+  { numero: '04', top: '33.30%', height: '5.4%' },
+  { numero: '05', top: '39.65%', height: '5.4%' },
+  { numero: '06', top: '46.00%', height: '5.4%' },
+  { numero: '07', top: '52.35%', height: '5.4%' },
+  { numero: '08', top: '58.70%', height: '5.4%' },
+  { numero: '09', top: '65.05%', height: '5.4%' },
+  { numero: '10', top: '71.40%', height: '5.4%' },
+  { numero: '11', top: '77.75%', height: '5.4%' },
+  { numero: '12', top: '84.10%', height: '5.4%' },
+  { numero: '13', top: '90.45%', height: '5.4%' },
+];
+
+const TOPIC_ROW_COORDS_PROT_SOCIAL = [
+  { numero: '01', top: '29.87%', height: '5.52%' },
+  { numero: '02', top: '36.50%', height: '7.70%' },
+  { numero: '03', top: '45.32%', height: '7.70%' },
+  { numero: '04', top: '54.13%', height: '5.52%' },
+  { numero: '05', top: '60.77%', height: '7.70%' },
+  { numero: '06', top: '69.58%', height: '5.52%' },
+  { numero: '07', top: '76.23%', height: '5.52%' },
 ];
 
 export const ScreenView: React.FC<ScreenViewProps> = ({
   currentScreen,
+  selectedState = 'MA',
   selectedThemes,
   selectedTopic,
   topics,
+  isProtecaoSocial = false,
   onOpenStateSelector,
   onSelectState,
   onContinueFromState,
@@ -66,11 +80,51 @@ export const ScreenView: React.FC<ScreenViewProps> = ({
   onContinueToClosing,
   onRestart,
 }) => {
+  let bgSrc = `/assets/${currentScreen}.png`;
+
+  if (currentScreen === 'tela-1' || currentScreen === 'tela-2') {
+    bgSrc = `/assets/${currentScreen}.png`;
+  } else if (currentScreen === 'tela-3' || currentScreen === 'tela-4' || currentScreen === 'tela-5') {
+    if (selectedState === 'PA') {
+      bgSrc = `/assets/pa/pa-${currentScreen}.png`;
+    } else if (selectedState === 'MG') {
+      bgSrc = `/assets/mg/mg-${currentScreen}.png`;
+    } else {
+      bgSrc = `/assets/${currentScreen}.png`;
+    }
+  } else if (currentScreen === 'tela-6' || currentScreen === 'tela-7' || currentScreen === 'tela-8') {
+    if (isProtecaoSocial) {
+      if (selectedState === 'PA') {
+        bgSrc = `/assets/pa-ps/pa-ps-${currentScreen}.png`;
+      } else if (selectedState === 'MG') {
+        bgSrc = `/assets/mg-ps/mg-ps-${currentScreen}.png`;
+      } else {
+        bgSrc = `/assets/ma-ps/ma-ps-${currentScreen}.png`;
+      }
+    } else {
+      if (selectedState === 'PA') {
+        bgSrc = `/assets/pa/pa-${currentScreen}.png`;
+      } else if (selectedState === 'MG') {
+        bgSrc = `/assets/mg/mg-${currentScreen}.png`;
+      } else {
+        bgSrc = `/assets/${currentScreen}.png`;
+      }
+    }
+  } else if (currentScreen === 'tela-9') {
+    if (selectedState === 'PA') {
+      bgSrc = `/assets/pa/pa-tela-9.png`;
+    } else if (selectedState === 'MG') {
+      bgSrc = `/assets/mg/mg-tela-9.png`;
+    } else {
+      bgSrc = `/assets/tela-9.png`;
+    }
+  }
+
   return (
     <div className="screen-view">
       {/* Background Screen PNG Asset */}
       <img
-        src={`/assets/${currentScreen}.png`}
+        src={bgSrc}
         alt={`Tela ${currentScreen}`}
         className="screen-bg-img"
         draggable={false}
@@ -203,25 +257,44 @@ export const ScreenView: React.FC<ScreenViewProps> = ({
         </>
       )}
 
-      {/* Screen 6: 13 Topics list */}
+      {/* Screen 6: Topics list */}
       {currentScreen === 'tela-6' && (
         <>
-          {TOPIC_ROW_COORDS.map((coord) => {
-            const topic = topics.find((t) => t.numero === coord.numero);
-            if (!topic) return null;
-            return (
-              <Hotspot
-                key={coord.numero}
-                top={coord.top}
-                left="10.2%"
-                width="79.8%"
-                height="5.4%"
-                rounded="full"
-                label={`Tópico ${topic.numero} - ${topic.tema}`}
-                onClick={() => onSelectTopic(topic)}
-              />
-            );
-          })}
+          {isProtecaoSocial ? (
+            TOPIC_ROW_COORDS_PROT_SOCIAL.map((coord) => {
+              const topic = topics.find((t) => t.numero === coord.numero);
+              if (!topic) return null;
+              return (
+                <Hotspot
+                  key={coord.numero}
+                  top={coord.top}
+                  left="10.22%"
+                  width="79.29%"
+                  height={coord.height}
+                  rounded="full"
+                  label={`Tópico ${topic.numero} - ${topic.tema}`}
+                  onClick={() => onSelectTopic(topic)}
+                />
+              );
+            })
+          ) : (
+            TOPIC_ROW_COORDS_SAUDE.map((coord) => {
+              const topic = topics.find((t) => t.numero === coord.numero);
+              if (!topic) return null;
+              return (
+                <Hotspot
+                  key={coord.numero}
+                  top={coord.top}
+                  left="10.2%"
+                  width="79.8%"
+                  height={coord.height}
+                  rounded="full"
+                  label={`Tópico ${topic.numero} - ${topic.tema}`}
+                  onClick={() => onSelectTopic(topic)}
+                />
+              );
+            })
+          )}
         </>
       )}
 
@@ -230,19 +303,35 @@ export const ScreenView: React.FC<ScreenViewProps> = ({
         <>
           {selectedTopic && (
             <div
-              style={{
-                position: 'absolute',
-                top: TOPIC_ROW_COORDS.find((c) => c.numero === selectedTopic.numero)?.top || '14.25%',
-                left: '10.2%',
-                width: '79.8%',
-                height: '5.4%',
-                backgroundColor: '#f29900',
-                borderRadius: '9999px',
-                zIndex: 10,
-                opacity: 0.9,
-                boxShadow: '0 4px 12px rgba(242, 153, 0, 0.4)',
-                pointerEvents: 'none',
-              }}
+              style={
+                isProtecaoSocial
+                  ? {
+                      position: 'absolute',
+                      top: TOPIC_ROW_COORDS_PROT_SOCIAL.find((c) => c.numero === selectedTopic.numero)?.top || '29.87%',
+                      left: '10.22%',
+                      width: '79.29%',
+                      height: TOPIC_ROW_COORDS_PROT_SOCIAL.find((c) => c.numero === selectedTopic.numero)?.height || '5.52%',
+                      backgroundColor: '#f29900',
+                      borderRadius: '9999px',
+                      zIndex: 10,
+                      opacity: 0.9,
+                      boxShadow: '0 4px 12px rgba(242, 153, 0, 0.4)',
+                      pointerEvents: 'none',
+                    }
+                  : {
+                      position: 'absolute',
+                      top: TOPIC_ROW_COORDS_SAUDE.find((c) => c.numero === selectedTopic.numero)?.top || '14.25%',
+                      left: '10.2%',
+                      width: '79.8%',
+                      height: TOPIC_ROW_COORDS_SAUDE.find((c) => c.numero === selectedTopic.numero)?.height || '5.4%',
+                      backgroundColor: '#f29900',
+                      borderRadius: '9999px',
+                      zIndex: 10,
+                      opacity: 0.9,
+                      boxShadow: '0 4px 12px rgba(242, 153, 0, 0.4)',
+                      pointerEvents: 'none',
+                    }
+              }
             />
           )}
           <Hotspot

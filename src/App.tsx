@@ -6,10 +6,12 @@ import { ToastAlert } from './components/ToastAlert';
 export default function App() {
   const {
     currentScreen,
+    selectedState,
     selectedThemes,
     selectedTopic,
     toastMessage,
     topics,
+    isProtecaoSocial,
     showToast,
     handleOpenStateSelector,
     handleSelectState,
@@ -31,9 +33,11 @@ export default function App() {
       />
       <ScreenView
         currentScreen={currentScreen}
+        selectedState={selectedState}
         selectedThemes={selectedThemes}
         selectedTopic={selectedTopic}
         topics={topics}
+        isProtecaoSocial={isProtecaoSocial}
         onOpenStateSelector={handleOpenStateSelector}
         onSelectState={handleSelectState}
         onContinueFromState={handleContinueFromState}
