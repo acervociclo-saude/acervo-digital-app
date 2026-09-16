@@ -1,3 +1,5 @@
+/// <reference types="node" />
+
 import crypto from 'node:crypto';
 
 export interface DriveApiFile {
