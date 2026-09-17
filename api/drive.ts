@@ -60,48 +60,36 @@ export async function getGoogleOAuthToken(clientEmail: string, privateKey: strin
   return tokenData.access_token;
 }
 
-export default async function handler(request: Request): Promise<Response> {
-  const url = new URL(request.url);
-  const rawTarget = url.searchParams.get('folderId') || url.searchParams.get('url') || '';
+export default async function handler(req: any, res: any) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  const rawTarget = (req.query?.folderId as string) || (req.query?.url as string) || '';
   const folderId = extractFolderId(rawTarget);
 
   if (!folderId) {
-    return new Response(
-      JSON.stringify({
-        success: false,
-        configured: false,
-        error: 'Parâmetro folderId ou url ausente ou inválido.',
-      }),
-      {
-        status: 400,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      }
-    );
+    return res.status(400).json({
+      success: false,
+      configured: false,
+      error: 'Parâmetro folderId ou url ausente ou inválido.',
+    });
   }
 
   const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
   let privateKey = process.env.GOOGLE_PRIVATE_KEY;
 
   if (!clientEmail || !privateKey) {
-    return new Response(
-      JSON.stringify({
-        success: false,
-        configured: false,
-        folderId,
-        message: 'Google Cloud Service Account não configurada nas variáveis de ambiente da Vercel.',
-        help: 'Para ativar a integração direta, defina GOOGLE_SERVICE_ACCOUNT_EMAIL e GOOGLE_PRIVATE_KEY no painel da Vercel (Settings > Environment Variables).',
-      }),
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      }
-    );
+    return res.status(200).json({
+      success: false,
+      configured: false,
+      folderId,
+      message: 'Google Cloud Service Account não configurada nas variáveis de ambiente da Vercel.',
+      help: 'Para ativar a integração direta, defina GOOGLE_SERVICE_ACCOUNT_EMAIL e GOOGLE_PRIVATE_KEY no painel da Vercel (Settings > Environment Variables).',
+    });
   }
 
   try {
@@ -118,58 +106,32 @@ export default async function handler(request: Request): Promise<Response> {
 
     if (!driveRes.ok) {
       const errBody = await driveRes.text();
-      return new Response(
-        JSON.stringify({
-          success: false,
-          configured: true,
-          folderId,
-          error: 'Erro ao consultar pasta no Google Drive: ' + errBody,
-        }),
-        {
-          status: 502,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          },
-        }
-      );
+      return res.status(502).json({
+        success: false,
+        configured: true,
+        folderId,
+        error: 'Erro ao consultar pasta no Google Drive: ' + errBody,
+      });
     }
 
     const driveData = (await driveRes.json()) as { files?: DriveApiFile[] };
     const files = driveData.files || [];
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        configured: true,
-        folderId,
-        totalFiles: files.length,
-        files,
-      }),
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
-          'Access-Control-Allow-Origin': '*',
-        },
-      }
-    );
+    res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');
+    return res.status(200).json({
+      success: true,
+      configured: true,
+      folderId,
+      totalFiles: files.length,
+      files,
+    });
   } catch (err) {
-    return new Response(
-      JSON.stringify({
-        success: false,
-        configured: true,
-        folderId,
-        error: err instanceof Error ? err.message : 'Erro interno ao processar requisição.',
-      }),
-      {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      }
-    );
+    return res.status(500).json({
+      success: false,
+      configured: true,
+      folderId,
+      error: err instanceof Error ? err.message : 'Erro interno ao processar requisição.',
+    });
   }
 }
+
